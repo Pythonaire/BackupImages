@@ -1,0 +1,116 @@
+{% extends "backup_base.html" %}
+{% block content %}
+<section class="custom-section-styles">
+    <div class="container">
+        <div class="justify-content-center mt-4">
+            <div class="col-lg-8 mx-auto mbr-form">
+                {% if lst is not none %}
+                <h4 class="mbr-section-title mbr-fonts-style mb-2 display-7"><strong>The following list containing hosts that:</strong></h4>
+                    <ul>
+                        <li>was added to the list (<strong>"client list"</strong>),</li>
+                        <li>answered on ping - they are online,</li>
+                        <li>has a server ssh key, the backup process can run automatically,</li>
+                        <li>has a /dev/diskXX which is bootable.</li>
+                    <br>
+                   <li>If the host is in the list, but not online, the line will be red marked.</li>
+                    <li>If the host is not online and was accidentally selected, it will be automatically removed from the backup process.</li>
+                    <li>It is a good idea to use deborphan or equal tools and deleted older journal and syslog files before starting the backup.</li>
+                </ul><br>
+
+                <form action="{{ url_for('backup_system') }}" method="POST" onsubmit="startBackup(event)">
+                    <table class="table">
+                        <tr>
+                            <th>Select</th>
+                            <th>IP Address</th>
+                            <th>Hostname</th>
+                            <th>User</th>
+                            <th>Disk</th>
+                        </tr>
+                        {% for item in lst %}
+                        <tr class="{% if not item.online %}table-danger{% endif %}">
+                            <td>
+                                <input type="checkbox" name="selected_hosts" value="{{ item.ip }}">
+                            </td>
+                            <td>{{ item.ip }}</td>
+                            <td>{{ item.hostname }}</td>
+                            <td>{{ item.user }}</td>
+                            <td>{{ item.disk }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <button type="submit" id="submitBtn" class="btn btn-secondary display-4">Start backup</button>
+                </form>
+                <!-- Add this spinner -->
+                <div id="spinner" style="display: none; margin-top: 10px;">
+                    <div class="loader"></div>
+                </div>
+                <!-- Add this spinner -->
+                <div id="spinner" style="display: none; margin-top: 10px;">
+                    <div class="loader"></div>
+                </div>
+                    <script>
+                        function startBackup(event) {
+                            event.preventDefault();  // Prevent page reload
+                            document.getElementById("spinner").style.display = "block"; // Show spinner
+                            document.getElementById("submitBtn").disabled = true;
+                            let formData = new FormData(event.target);
+                            fetch(event.target.action, {
+                            method: 'POST',
+                            body: formData
+                            })
+                            .then(response => response.json())  // Assuming the server responds with JSON
+                            .then(data => {
+                            if (data.success) {
+                                // After form submission is successful, start checking backup status
+                                checkBackupStatus();
+                                } else {
+                                // Handle error if backup cannot be started
+                                alert("Error starting backup.");
+                                document.getElementById("spinner").style.display = "none";
+                                document.getElementById("submitBtn").disabled = false;
+                                }
+                                });
+                        }
+                        function checkBackupStatus() {
+                            fetch('/status')
+                            .then(response => response.json())
+                            .then(data => {
+                            if (data.running) {
+                            setTimeout(checkBackupStatus, 5000); // Keep checking every 5 seconds
+                            } else {
+                            document.getElementById("spinner").style.display = "none"; // Hide spinner
+                            document.getElementById("submitBtn").disabled = false;
+                            window.location.reload();  
+                            alert("Backup process successfully.");           
+                            }
+                        })
+                        .catch(error => {
+                            alert("Error checking backup status:" + JSON.stringify(error))
+                        });
+                        }
+                    </script>
+                    <style>
+                        .loader {
+                            border: 4px solid #f3f3f3;
+                            border-top: 4px solid #3498db;
+                            border-radius: 50%;
+                            width: 30px;
+                            height: 30px;
+                            animation: spin 1s linear infinite;
+                        }
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    </style>
+                {% else %}
+                <ul>
+                    <li><strong>No system defined</strong> — Please add a system via "Define System"</li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

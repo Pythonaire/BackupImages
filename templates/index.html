@@ -1,0 +1,22 @@
+{% extends "backup_base.html" %}
+{% block content %}
+<section class="header16 cid-u1pB5T6mE2" id="header16-1s">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-md-6 image-wrapper">
+                <img src="static/assets/images/mbr-1076x712.jpg" alt="Mobirise Website Builder">
+            </div>
+            <div class="col-12 col-md">
+                <div class="text-wrapper">
+                    <h1 class="mbr-section-title mbr-fonts-style mb-3 display-1"><strong>System backup</strong></h1>
+                    <p class="mbr-text mbr-fonts-style display-7">
+                      Make a full system backup, using "dd" and "netcat". The application log into a remote machine and load the disk marked as boot disk, 
+                      push data via netcat to the backup server and generate a *.img.gz file on the backup server. With that generated file, a system can by fully restored.</p>
+                    <div class="mbr-section-btn mt-3"><a class="btn btn-secondary display-4" href="{{ url_for('backup_system') }}">Get Started</a>
+                        <a class="btn btn-primary display-4" href="https://mobiri.se">All backup</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

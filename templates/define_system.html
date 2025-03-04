@@ -1,0 +1,58 @@
+{% extends "backup_base.html" %}
+{% block content %}
+<section class="custom-section-styles">
+    <div class="container">
+        <div class="justify-content-center mt-5">
+            <div class="col-lg-8 mx-auto">
+                {% if lst is not none %}
+                <h4 class="mbr-section-title mbr-fonts-style mb-2 display-7"><strong>Following hosts (IP addresses) are stored to use for backup:</strong></h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Hostname</th>
+                                <th>User</th>
+                                <th>Disk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in lst %}
+                            <tr>
+                                <td>{{ item.ip }}</td>
+                                <td>{{ item.hostname }}</td>
+                                <td>{{ item.user }}</td>
+                                <td>{{ item.disk }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p>If you remove a host from the list, make sure the ssh key on that hosts is removed too!<br>
+                Before adding a host, copy the ssh key to the host you wish to backup.</p>
+                {% else %}
+                <ul class="text-center list-unstyled">
+                    <li><strong>No System Definition</strong> - Please define a system using "Add System"</li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-8 mx-auto">
+                <form action="{{ url_for('backup_define') }}" method="POST" class="form-with-styler w-100">
+                    <div class="d-flex flex-wrap justify-content-center gap-2 align-items-center">
+                        <input type="text" name="user" placeholder="User" class="form-control w-25">
+                        <input type="text" name="ip" placeholder="IP Address" class="form-control w-25">
+                        
+                        <button type="submit" class="btn btn-primary" name="action" value="add">Add</button>
+                        <button type="submit" class="btn btn-secondary" name="action" value="remove">Remove</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

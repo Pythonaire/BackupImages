@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Site made with Mobirise Website Builder v5.3.0, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <meta name="description" content="Energy">
+  <title>Service</title>
+  <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="static/assets/theme/css/style.css">
+  <link rel="stylesheet" href="static/assets/mobirise/css/mbr-additional.css" type="text/css">
+</style>
+</head>
+<body>
+    <section class="menu cid-s48OLK6784" once="menu" id="menu1-18">
+        <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="navbar-brand">  
+                    <span class="navbar-caption-wrap">
+                        <a class="navbar-caption text-black text-primary display-7" href="{{ url_for('index')}}">Home</a>
+                    </span>
+                </div>
+                
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
+                          <a class="nav-link link text-black text-primary display-4" href="{{ url_for('define_system')}}">clients list</a>
+                          <a class="nav-link link text-black text-primary display-4" href="{{ url_for('backup_system')}}">backup</a>
+                          <a class="nav-link link text-black text-primary display-4" href="{{ url_for('backup_files')}}">stored backups</a>                      
+                        </div>       
+                    </div>
+            </div>
+        </nav>
+    </section>
+    {% block content %}{% endblock content %}
+</body>
+</html>
