@@ -13,4 +13,49 @@ The Webserver itself is based on a simple flask server and using the free "Mobir
 
 ## How to to use
 
-....
+1) To get the flask running, get a sef signed certificate:
+````
+openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+````
+Store That certificate inside the static folder.
+
+2) Make sure "paramiko", "flask" and "psutil" is installed
+
+````
+sudo pip install -r requirements.txt"
+````
+
+3) Make sure "netcat" and "gzip" is installed on the backup hosts and the backup client.
+````
+sudo apt install netcat gzip
+````
+
+4) Make sure, the user on the backup host and the client has the permission to execute netcat, dd and gzip, for example create a "backup_user"
+````
+echo "<the user> ALL=(ALL) NOPASSWD: /bin/dd, /bin/nc" | sudo tee /etc/sudoers.d/<the user>
+````
+5) create a ssh key for the automated backup process on the backup hosts
+````
+ssh-keygen -t rsa -b 4096 -C "<the user>@<the server>" -f ~/.ssh/id_rsa -N ""
+````
+6) copy this ssh key to the backup client
+````
+ssh-copy-id -i ~/.ssh/id_rsa.pub <the client user>@<client-ip>
+````
+On the cleint machine you should find ".ssh/authorized_keys" file.
+
+7) On the client machine allow the use of ssh certificates
+````
+sudo nano /etc/ssh/sshd_config
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+````
+8) restart ssh
+````
+sudo systemctl restart ssh
+````
+9) Use a Webbrowser https://<your Backup Server>:<the flask port> (predefined port 5005)
+
