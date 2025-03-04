@@ -38,11 +38,12 @@ echo "<the user> ALL=(ALL) NOPASSWD: /bin/dd, /bin/nc" | sudo tee /etc/sudoers.d
 ````
 ssh-keygen -t rsa -b 4096 -C "<the user>@<the server>" -f ~/.ssh/id_rsa -N ""
 ````
+6) 
 6) copy this ssh key to the backup client
 ````
 ssh-copy-id -i ~/.ssh/id_rsa.pub <the client user>@<client-ip>
 ````
-On the client machine you should find ".ssh/authorized_keys" file.
+On the client machine you should find ".ssh/authorized_keys" file. 
 
 7) On the client machine allow the use of ssh certificates
 ````
@@ -57,5 +58,7 @@ chmod 600 ~/.ssh/authorized_keys
 ````
 sudo systemctl restart ssh
 ````
+If you can login on that client "ssh '<the user>@<client ip>'" without the password, it ssh works well with the ssh key. 
+
 9) Use a Webbrowser https://<your Backup Server>:<the flask port> (predefined port 5005)
 
