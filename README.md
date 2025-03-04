@@ -13,19 +13,19 @@ The Webserver itself is based on a simple flask server and using the free "Mobir
 
 ## How to to use
 
-1) To get the flask running, get a sef signed certificate:
+1) To get the flask running, get a self signed certificate or use your own:
 ````
 openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
 ````
-Store That certificate inside the static folder.
+Store that certificate inside the static folder.
 
-2) Make sure "paramiko", "flask" and "psutil" is installed
+2) Make sure "paramiko", "flask" and "psutil" are installed
 
 ````
 sudo pip install -r requirements.txt"
 ````
 
-3) Make sure "netcat" and "gzip" is installed on the backup hosts and the backup client.
+3) Make sure "netcat" and "gzip" are installed on the backup hosts and the backup client.
 ````
 sudo apt install netcat gzip
 ````
@@ -42,7 +42,7 @@ ssh-keygen -t rsa -b 4096 -C "<the user>@<the server>" -f ~/.ssh/id_rsa -N ""
 ````
 ssh-copy-id -i ~/.ssh/id_rsa.pub <the client user>@<client-ip>
 ````
-On the cleint machine you should find ".ssh/authorized_keys" file.
+On the client machine you should find ".ssh/authorized_keys" file.
 
 7) On the client machine allow the use of ssh certificates
 ````
