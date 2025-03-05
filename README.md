@@ -1,6 +1,6 @@
 # Intention
 
-Having multiple, special configured linux systems, in case of a system crash it take a lot of time to recover the system. Where are any tools, that can backup files and folders, but not the whole system at once. True, PROXMOX can do that, but not for raspberian - for example. Along this small web server, we can run multiple backup processes in parallel and generate images from all linux systems inside our local network.  
+Having multiple, special configured linux systems, in case of a system crash it take a lot of time to recover the systems from the scratch, with all configurations, packages etc. Where are any tools (like "Time Shift"), that can backup files and folders, but not the whole system at once. True, PROXMOX can do that, but not for raspberian - for example. Along this small web server, we can run multiple backup processes in parallel and generate images from all linux systems inside our local network.  
 
 ## How it works
 
