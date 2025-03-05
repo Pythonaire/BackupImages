@@ -13,24 +13,20 @@ The web server itself is based on a simple flask server and using the free "Mobi
 
 ## How to to use
 
-1) To get the flask running, get a self signed certificate or use your own (or remove ssl_context in main.py):
+1) To get the flask running, geerate a self signed certificate, use your own or remove ssl_context in flask definition main.py (without ssl http is needed instead of https):
 ````
 openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
 ````
 Store that certificate inside the static folder.
-
 2) Make sure "paramiko", "flask" and "psutil" are installed
-
 ````
 sudo pip install -r requirements.txt"
 ````
-
 3) Make sure "netcat" and "gzip" are installed on the backup hosts and the backup client.
 ````
 sudo apt install netcat gzip
 ````
-
-4) Make sure, the user on the backup host and on the client side has the permission to execute netcat, dd and gzip, for example create a "backup_user"
+4) Make sure, the user on the backup host and on the client side has the permission to execute netcat, dd and gzip, for example create a "backup_user" and use:
 ````
 echo "<the user> ALL=(ALL) NOPASSWD: /bin/dd, /bin/nc" | sudo tee /etc/sudoers.d/<the user>
 ````
@@ -38,7 +34,7 @@ echo "<the user> ALL=(ALL) NOPASSWD: /bin/dd, /bin/nc" | sudo tee /etc/sudoers.d
 ````
 ssh-keygen -t rsa -b 4096 -C "<the user>@<the server>" -f ~/.ssh/id_rsa -N ""
 ````
-6) copy the ssh key generated on the backup hosts to the backup client
+6) copy the generated ssh key to each backup client, you want to be backed up.
 ````
 ssh-copy-id -i ~/.ssh/id_rsa.pub <the client user>@<client-ip>
 ````
@@ -59,5 +55,7 @@ sudo systemctl restart ssh
 ````
 If you can login on that client "ssh '<the user>@<client ip>'" without the password, ssh via key works well. 
 
-9) Use a Webbrowser ```https://<your Backup Server>:<the flask port> ``` (predefined port is 5005, see maim.py)
+9) Start the web server via ```python main.py```or generate a systemctl. 
+
+10) Use a web browser ```https://<your Backup Server>:<the flask port> ``` (predefined port is 5005, see main.py)
 
