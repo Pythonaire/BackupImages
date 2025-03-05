@@ -57,7 +57,7 @@ chmod 600 ~/.ssh/authorized_keys
 ````
 sudo systemctl restart ssh
 ````
-If you can login on that client "ssh '<the user>@<client ip>'" without the password, it ssh works well with the ssh key. 
+If you can login on that client "ssh '<the user>@<client ip>'" without the password, ssh via key works well. 
 
 9) Use a Webbrowser ```https://<your Backup Server>:<the flask port> ``` (predefined port is 5005, see maim.py)
 
