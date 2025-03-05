@@ -13,7 +13,7 @@ The web server itself is based on a simple flask server and using the free "Mobi
 
 ## How to to use
 
-1) To get the flask running, geerate a self signed certificate, use your own or remove ssl_context in flask definition main.py (without ssl http is needed instead of https):
+1) To get the flask server running, generate a self signed certificate, use your own or remove ssl_context in flask definition main.py (without ssl http is needed instead of https):
 ````
 openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
 ````
