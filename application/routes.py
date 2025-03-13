@@ -17,13 +17,13 @@ def index():
 
 @app.route('/define_system',  methods=['GET','POST'])
 def backup_define():
-    lst = backup.read_system()
     if request.method == 'POST':
         action = request.form.get("action")
         ip = request.form.get("ip")
         user = request.form.get("user")
         if action == "add": backup.add_system(ip, user)
         elif action == "remove": backup.remove_system(ip)
+    lst = backup.read_system()
     return render_template("backup_define.html", title="define", lst=lst)
 
 @app.route('/backup_system',  methods=['GET','POST'])

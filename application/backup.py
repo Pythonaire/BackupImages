@@ -31,16 +31,20 @@ def read_system():
 def detect_disks(ssh):
     """Detect available disks on the client."""
     try:
-        stdin, stdout, stderr = ssh.exec_command('''DISK=$(findmnt -n -o SOURCE /boot);
+        stdin, stdout, stderr = ssh.exec_command('''
+            DISK=$(/bin/findmnt -n -o SOURCE /boot 2>/dev/null || /bin/findmnt -n -o SOURCE /boot/firmware 2>/dev/null);
             if echo "$DISK" | grep -q '^/dev/nvme'; then
                 echo "$DISK" | sed -E 's/p[0-9]+$//';
             elif echo "$DISK" | grep -q '^/dev/mmcblk'; then
                 echo "$DISK" | sed -E 's/p[0-9]+$//';
+            elif echo "$DISK" | grep -q '^/dev/sd'; then
+                echo "$DISK" | sed -E 's/[0-9]+$//';
             else
-                echo "$DISK" | sed 's/[0-9]*$//';
-            fi''')
+                echo "$DISK";
+            fi
+            ''')
         disks = stdout.read().decode().strip().split("\n")
-        return disks if disks else None
+        return disks[0] if disks else None
     except Exception as e:
         logging.error(f"[ERROR] Failed to detect disks: {e}")
         return None
@@ -60,8 +64,10 @@ def add_system(ip, user):
     if prepared:
         data = SYSJSON.readJson()
         disk = detect_disks(ssh)
+        new_entry = {'ip': ip, 'hostname': hostname, 'user': user, 'disk': disk}
         if data:
-            data.append({'ip': ip, 'hostname':hostname, 'user': user, 'disk': disk})
+            if new_entry not in data:
+                data.append(new_entry)
         else:
             data = [{'ip': ip, 'hostname':hostname, 'user': user, 'disk': disk }]
         SYSJSON.writeJson(data)
@@ -122,23 +128,6 @@ def get_backup_files():
                 "filename": file
             })
     return backups  # Returns an empty list if no valid backup files exist
-
-def detect_disks(ssh):
-    """Detect available disks on the client."""
-    try:
-        stdin, stdout, stderr = ssh.exec_command('''DISK=$(findmnt -n -o SOURCE /boot);
-            if echo "$DISK" | grep -q '^/dev/nvme'; then
-                echo "$DISK" | sed -E 's/p[0-9]+$//';
-            elif echo "$DISK" | grep -q '^/dev/mmcblk'; then
-                echo "$DISK" | sed -E 's/p[0-9]+$//';
-            else
-                echo "$DISK" | sed 's/[0-9]*$//';
-            fi''')
-        disks = stdout.read().decode().strip().split("\n")[0]
-        return disks if disks else None
-    except Exception as e:
-        logging.error(f"[ERROR] Failed to detect disks: {e}")
-        return None
 
 def is_netcat_server_running(port):
     """Check if a netcat server is running and listening on the given port."""
