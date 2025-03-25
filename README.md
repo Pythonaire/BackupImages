@@ -42,7 +42,7 @@ AuthorizedKeysFile .ssh/authorized_keys
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
 ````
-8) restart ssh
+8) restart ssh on the backup client machine
 ````
 sudo systemctl restart ssh
 ````
