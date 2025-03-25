@@ -1,14 +1,6 @@
 # Intention
 
-Having multiple, special configured linux systems, in case of a system crash it take a lot of time to recover the systems from the scratch, with all configurations, packages etc. Where are any tools (like "Time Shift"), that can backup files and folders, but not the whole system at once. True, PROXMOX can do that, but not for raspberian - for example. Along this small web server, we can run multiple backup processes in parallel and generate images from all linux systems inside our local network.  
-
-## How it works
-
-Having the web server, the machine, we like to backup, have to be added into a list for further processing. The server check the ability of the host we adding, then store the hosts in UNIX_System.json with ip address, username and the detected boot disk.  
-For the automated backup process, we need a ssh key on that machine. The backup process log in the machine, select the boot image, call "dd" to copy the disk image, zip that data and use a netcat session to transport the data to the backup host. On the backup host an *.img.gz is written.  
-This image can be used to recover the system at once and restart the whole machine in that configuration.
-Only the boot image will be backed up, not additionally, external disks.
-The web server itself is based on a simple flask server and using the free "Mobirise Website Builder" for design elements. 
+Having multiple, special configured linux systems, in case of a system crash it take a lot of time to recover the systems from the scratch, with all configurations, packages etc. Where are any tools (like "Time Shift" or "BorgBackup"), that can backup files and folders, but not the whole system at once. True, PROXMOX can do that, but not for raspberian - for example. Along this small web server, we can run multiple backup processes in parallel and generate images from all linux systems inside our local network.  
 
 
 ## How to to use
