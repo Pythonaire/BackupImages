@@ -10,6 +10,7 @@ Having multiple, special configured linux systems, in case of a system crash it 
 openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
 ````
 Store that certificate inside the static folder.
+
 2) Make sure "paramiko", "flask" and "psutil" are installed
 ````
 sudo pip install -r requirements.txt"
